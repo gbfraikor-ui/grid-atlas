@@ -1,0 +1,68 @@
+{
+  "id": "nova",
+  "name": "Northern Virginia",
+  "bounds": [
+    -78.5442,
+    38.2424,
+    -77.0317,
+    39.466
+  ],
+  "generated_at": "2026-11-03T01:05:41+00:00",
+  "layers": {
+    "basemap": {
+      "status": "built",
+      "file": "basemap.pmtiles",
+      "id": "basemap",
+      "region": "nova",
+      "source_title": "Protomaps Basemap, daily build of 2026-11-01 (tiles version 4.15.2)",
+      "source_url": "https://build.protomaps.com/20261101.pmtiles",
+      "license": "Open Database License (ODbL) 1.0, as a Produced Work",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "retrieved_at": "2026-11-03T00:57:35+00:00",
+      "bbox": [
+        -78.64,
+        38.14,
+        -76.93,
+        39.57
+      ],
+      "max_zoom": 14,
+      "bytes": 85546268,
+      "sha256": "f7d77bac21afcb2b21fd145b1a7b1287bf61ec889b4872cd01c1e81eb726eeba"
+    },
+    "counties": {
+      "status": "built",
+      "file": "counties.geojson",
+      "source_url": "https://www2.census.gov/geo/tiger/GENZ2025/shp/cb_2025_us_county_500k.zip",
+      "license": "Public domain (U.S. federal government work)",
+      "retrieved_at": "2026-11-01T20:43:42+00:00"
+    },
+    "policy": {
+      "status": "built",
+      "file": "policy.json",
+      "rows": 21,
+      "note": "Hand-researched; each row carries its own source_url, source_type and as_of."
+    },
+    "transmission": {
+      "status": "built",
+      "file": "transmission.geojson",
+      "source_title": "OpenStreetMap data extract for Virginia, through 2026-11-01",
+      "source_url": "https://download.geofabrik.de/north-america/us/virginia-261101.osm.pbf",
+      "license": "Open Database License (ODbL) 1.0",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "retrieved_at": "2026-11-03T00:12:57+00:00",
+      "min_kv": 69,
+      "note": "Volunteer-mapped OpenStreetMap data, not an official record of the grid."
+    },
+    "substations": {
+      "status": "built",
+      "file": "substations.geojson",
+      "source_title": "OpenStreetMap data extract for Virginia, through 2026-11-01",
+      "source_url": "https://download.geofabrik.de/north-america/us/virginia-261101.osm.pbf",
+      "license": "Open Database License (ODbL) 1.0",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "retrieved_at": "2026-11-03T00:12:57+00:00",
+      "min_kv": 69,
+      "note": "Volunteer-mapped OpenStreetMap data, not an official record of the grid."
+    }
+  }
+}

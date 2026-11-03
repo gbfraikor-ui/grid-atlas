@@ -1,0 +1,16 @@
+# Source config: U.S. county and county-equivalent boundaries.
+# pipeline/fetch.py reads this file to know what to download and how to cite it.
+# Nationwide file; each region's config picks out its own jurisdictions by FIPS.
+
+id: counties
+title: Census Cartographic Boundary File, Counties, 2025 (1:500,000)
+publisher: U.S. Census Bureau
+url: https://www2.census.gov/geo/tiger/GENZ2025/shp/cb_2025_us_county_500k.zip
+format: shapefile (zipped)
+license: Public domain (U.S. federal government work)
+
+# Why the cartographic boundary file and not TIGER/Line:
+# its shapes are simplified and clipped to the shoreline, which suits a web map.
+# TIGER/Line is more detailed and extends into water (e.g. the Potomac).
+
+# Checked 2026-11-01: HTTP 200, about 11.8 MB, last modified 2026-04-23.

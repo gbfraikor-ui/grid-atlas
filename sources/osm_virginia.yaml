@@ -1,0 +1,21 @@
+# Source config: a dated snapshot of OpenStreetMap for Virginia.
+# pipeline/fetch.py downloads it like any other file. The transmission and substations builders
+# both read from this one file, so it is a source of raw data rather than of a single layer.
+
+id: osm_virginia
+title: OpenStreetMap data extract for Virginia, through 2026-11-01
+publisher: OpenStreetMap contributors, extract by Geofabrik
+url: https://download.geofabrik.de/north-america/us/virginia-261101.osm.pbf
+format: OSM PBF
+license: Open Database License (ODbL) 1.0
+license_url: https://www.openstreetmap.org/copyright
+
+# Why a dated file and not virginia-latest.osm.pbf: anyone rerunning the pipeline gets the same
+# data. To update, change the date in the URL and the title, then re-run the builders.
+# Why not the Overpass API: its public server refused our query at capacity (2026-11-02) and
+# says automated use should run its own instance.
+
+# OSM is volunteer-mapped, so it is not an official record of the grid. Coverage and tags such
+# as voltage can be missing or out of date.
+
+# Checked 2026-11-02: HTTP 200, 429,268,056 bytes (about 409 MiB), last modified 2026-11-02.

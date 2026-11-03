@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Atlas</title>
+  <link rel="stylesheet" href="vendor/maplibre-gl/maplibre-gl.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <header>
+      <h1>Grid Atlas</h1>
+      <p id="region-name"></p>
+    </header>
+    <section id="legend"></section>
+    <section id="details">
+      <p class="hint">Click a jurisdiction to see its policy history.</p>
+    </section>
+    <section id="statewide"></section>
+    <section id="layers"></section>
+  </aside>
+  <main id="map"></main>
+
+  <script src="vendor/maplibre-gl/maplibre-gl.js"></script>
+  <script src="vendor/pmtiles/pmtiles.js"></script>
+  <script src="vendor/protomaps/basemaps.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

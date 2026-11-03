@@ -1,0 +1,30 @@
+# Region config: Northern Virginia (v1).
+# The pipeline reads this file to know which jurisdictions belong to the region.
+# Map bounds are not set here; they get computed from the county shapes.
+
+id: nova
+name: Northern Virginia
+state_fips: "51"   # Virginia
+osm_source: osm_virginia   # OpenStreetMap extract covering this region (sources/osm_virginia.yaml)
+
+# FIPS codes checked against the Census 2020 county code list:
+# https://www2.census.gov/geo/docs/reference/codes2020/cou/st51_va_cou2020.txt
+# Retrieved 2026-11-01.
+# Virginia's independent cities are separate jurisdictions from the counties around them.
+jurisdictions:
+  # Counties
+  - { fips: "013", name: Arlington County }
+  - { fips: "047", name: Culpeper County }
+  - { fips: "059", name: Fairfax County }
+  - { fips: "061", name: Fauquier County }
+  - { fips: "069", name: Frederick County }
+  - { fips: "107", name: Loudoun County }
+  - { fips: "153", name: Prince William County }
+  - { fips: "179", name: Stafford County }
+  # Independent cities
+  - { fips: "510", name: Alexandria city }
+  - { fips: "600", name: Fairfax city }
+  - { fips: "610", name: Falls Church city }
+  - { fips: "683", name: Manassas city }
+  - { fips: "685", name: Manassas Park city }
+  - { fips: "840", name: Winchester city }   # sits inside Frederick County

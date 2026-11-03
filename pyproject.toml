@@ -1,0 +1,14 @@
+[project]
+name = "grid-atlas"
+version = "0.1.0"
+description = "Pipeline and web map of how the built environment and energy shape each other."
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "geopandas>=1.0",   # GeoDataFrames: pandas tables with a geometry column
+    "pyogrio>=0.10",    # fast reading/writing of GIS files (GeoJSON, GeoPackage, shapefile)
+    "shapely>=2.0",     # geometry operations: buffers, intersections, areas
+    "pandas>=2.2",      # tables
+    "requests>=2.32",   # downloading source data over HTTP
+    "pyyaml>=6.0",      # reading our config files (sources/*.yaml, regions/*.yaml)
+]

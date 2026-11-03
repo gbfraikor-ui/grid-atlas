@@ -1,0 +1,20 @@
+# Source config: the background map (roads, water, parks, building blocks, labels).
+# Too big to download whole, so fetch.py skips it. pipeline/build_basemap.py cuts one region
+# out of this file with the pmtiles tool, reading only the parts it needs.
+
+id: basemap
+type: pmtiles_extract
+title: Protomaps Basemap, daily build of 2026-11-01 (tiles version 4.15.2)
+publisher: Protomaps, from OpenStreetMap contributors and Natural Earth
+url: https://build.protomaps.com/20261101.pmtiles
+format: PMTiles
+license: Open Database License (ODbL) 1.0, as a Produced Work
+license_url: https://www.openstreetmap.org/copyright
+
+# How much to cut. Measured 2026-11-02 for nova: 86 MB. GitHub rejects files over 100 MB.
+max_zoom: 14      # zoom 15 adds individual buildings, but does not fit (see BACKLOG.md)
+margin_deg: 0.1   # extra degrees around the region, so the map does not go blank at its edge
+
+# Protomaps keeps daily builds for about a week, so this URL will stop working. The extract
+# committed in site/data/ is the lasting record; its provenance is saved beside it.
+# Build date chosen to match sources/osm_virginia.yaml.

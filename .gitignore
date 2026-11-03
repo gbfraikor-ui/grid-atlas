@@ -1,0 +1,18 @@
+# Python environment and caches (rebuilt by `uv sync`)
+.venv/
+__pycache__/
+*.pyc
+
+# Downloaded and intermediate data (rebuilt by the pipeline)
+data/raw/
+data/processed/
+# Command-line tools (rebuilt by pipeline/vendor_basemap.py)
+tools/
+
+# Instructions and settings for Claude Code, never published
+CLAUDE.md
+.claude/
+# Editor and OS clutter
+.vscode/
+.DS_Store
+Thumbs.db

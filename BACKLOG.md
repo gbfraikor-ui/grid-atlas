@@ -1,0 +1,40 @@
+# Backlog
+
+Ideas not in v1. v1 = Northern Virginia: counties + policy, transmission, substations,
+data centers, minimal map. Anything here needs a named data source before it moves into scope.
+
+## Demand side: how the built environment uses energy
+- Other large-load building types (labs, hospitals, industrial, campuses).
+- Residential energy use and burden by neighborhood.
+- Transportation electrification (EV charging, transit, freight depots).
+
+## Supply side: how energy shapes cities
+- Existing generation by fuel type, including renewables.
+- New generation: utility-scale solar and wind, storage, SMRs, fusion.
+  Most SMR and all fusion projects are proposals, not built plants, so this layer would
+  hold announcements with dates and sources (like policy), not infrastructure geometry.
+
+## Events layer (projects, not rules)
+- Table of project-level events: rezonings, special exceptions, court rulings, withdrawals.
+  Uses the same stages as policy, including `voided`.
+- First entries: PW Digital Gateway rezonings REZ2022-00032, -00033, -00036 (approved Dec 2023;
+  voided after Court of Appeals order 2026-07-29), per https://www.pwcva.gov/department/planning-office/pw-digital-gateway.
+  Exact approval date and votes still need a primary source.
+
+## Map: "rules in force" view
+- The v1 map shades each county by its latest policy row. That shows Loudoun as "proposed"
+  (2026 pause) even though an adopted rule (end of by-right, 2025) is in force. Add a second
+  view: strongest rule currently in force per county, once several counties have rows.
+
+## Map: individual building footprints
+- The v1 basemap stops at zoom 14 (86 MB), where buildings are merged blocks. Zoom 15 has separate
+  footprints but is too large for a single file in the repo (161 MB for the counties alone, measured
+  2026-11-02). Would need hosting outside the repo. Goes with the site-card view with hatched parcels.
+
+## Policy table extensions
+- `deadline` column for directives with due dates (e.g. EO 22's 180-day agency reports).
+- `vote` column for board decisions (e.g. 6–3).
+- Non-geographic bodies (SCC, PJM): decisions that don't map to one county.
+
+## Expansion
+- Additional regions beyond Northern Virginia.
