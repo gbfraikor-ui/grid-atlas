@@ -22,6 +22,9 @@ data centers, minimal map. Anything here needs a named data source before it mov
   Exact approval date and votes still need a primary source.
 - Frederick County: Winchester Gateway CUP #03-26 denied 2026-10-28; Virginia Technology Park withdrawn,
   per https://www.fcva.us/services/information-hub/data-centers.
+- Stafford County: Accokeek Center rezoning (Ord. O26-16) and substation CUP (Res. R26-128), approved 4-3
+  on 2026-10-07 per Potomac Local (reporting); Potomac Creek Campus deferred 2026-07-07 over a family
+  cemetery. County records not yet read.
 - Possible transmission line events: Frederick County's resolution opposing Valley Link's Valley North
   line, per https://www.fcva.us/Home/Components/News/News/1703/. Meeting date still needs a source.
 
