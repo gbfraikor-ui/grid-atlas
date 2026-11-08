@@ -44,5 +44,15 @@ data centers, minimal map. Anything here needs a named data source before it mov
 - `vote` column for board decisions (e.g. 6–3).
 - Non-geographic bodies (SCC, PJM): decisions that don't map to one county.
 
+## Map and analysis ideas (not v1)
+v1 adds layer toggles, the "rules in force" view, and data center locations. These come later:
+- Circles sized by data center capacity (MW or GW). Needs a sourced capacity per facility; announced
+  figures from reporting are uneven, so don't imply measured demand.
+- Other critical technology infrastructure, such as semiconductor plants.
+- Building energy use. Needs an open building-level dataset; none identified for Virginia yet.
+- Population vs. energy use (Census population is easy; energy use by area is the missing piece).
+- 3D view (limited by the basemap stopping at zoom 14).
+- Interactive "what if we build here" scenarios for grid impact. A modeling project of its own.
+
 ## Expansion
 - Additional regions beyond Northern Virginia.

@@ -364,8 +364,8 @@
     "source_title": "Data Centers: Information Hub, Frederick County",
     "source_url": "https://www.fcva.us/services/information-hub/data-centers",
     "source_type": "primary",
-    "as_of": "2026-11-02",
-    "notes": "Effective date not stated on the county page; no effective row yet. Ordinance text and earlier rules not yet read (agenda packet is too large for our fetch tool). Vote 6-1 (Oates opposed) per reporting: NV Daily 2026-09-25 (https://www.nvdaily.com/nvdaily/data-centers-stripped-as-allowable-use/article_79da8f36-a547-5430-bf96-e07bcc68a7ef.html); county page gives no vote. A separate amendment removing the TM (Technology-Manufacturing Park) district was postponed to 2026-11-12. Status of the existing Middletown data center unclear: Virginia Business 2026-07-14 (https://virginiabusiness.com/frederick-supervisors-to-consider-countywide-ban-of-data-centers/) reports the planning director said it would be grandfathered; NV Daily reports it was left out of the grandfathering resolution."
+    "as_of": "2026-11-08",
+    "notes": "Effective date not stated on the county page; no effective row yet. Ordinance text in the Board packet (https://d3n9y02raazwpg.cloudfront.net/fcva/30d9c95e-a871-11f1-a183-005056a89546-6bae79ef-69d4-4bfe-bfc5-ee05abc27e14-1789746393.pdf, pp. 173-174) states the purpose of prohibiting data center development; its vote block is blank there. Planning Commission recommended approval 12-1 (packet p. 163). Vote 6-1 (Oates opposed) per reporting: NV Daily 2026-09-25 (https://www.nvdaily.com/nvdaily/data-centers-stripped-as-allowable-use/article_79da8f36-a547-5430-bf96-e07bcc68a7ef.html); county page gives no vote. A separate amendment removing the TM (Technology-Manufacturing Park) district was postponed to 2026-11-12. Status of the existing Middletown data center unclear: Virginia Business 2026-07-14 (https://virginiabusiness.com/frederick-supervisors-to-consider-countywide-ban-of-data-centers/) reports the planning director said it would be grandfathered; NV Daily reports it was left out of the grandfathering resolution."
   },
   {
     "policy_id": "FREDERICK-GRANDFATHER-2026",
@@ -494,5 +494,53 @@
     "source_type": "primary",
     "as_of": "2026-11-08",
     "notes": "Vote 7-0 (p. 1). Grandfathering clause on p. 6. County page lists five projects covered: Stafford Technology Campus, Potomac Church Tech Center, Centreport Gateway / Pemberton, Vantage VA-4 (Melrod), Cranes Corner. Scanned PDF with no text layer; read from the page images."
+  },
+  {
+    "policy_id": "FREDERICK-ZO-DC-2024",
+    "geoid": "51069",
+    "jurisdiction": "Frederick County",
+    "date": "2024-07-10",
+    "stage": "adopted",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting",
+    "summary": "Board amended the zoning ordinance to list data centers as a use, codifying the zoning administrator's view that they were permitted by right in most business and industrial districts.",
+    "source_title": "Frederick County Board of Supervisors agenda packet, September 23, 2026",
+    "source_url": "https://d3n9y02raazwpg.cloudfront.net/fcva/30d9c95e-a871-11f1-a183-005056a89546-6bae79ef-69d4-4bfe-bfc5-ee05abc27e14-1789746393.pdf",
+    "source_type": "primary",
+    "as_of": "2026-11-08",
+    "notes": "Per County Attorney memo of 2026-08-31 in the Board packet (p. 169). Ordinance itself not read. The existing Middletown data center operates under this classification."
+  },
+  {
+    "policy_id": "FREDERICK-ZO-DC-CUP-2025",
+    "geoid": "51069",
+    "jurisdiction": "Frederick County",
+    "date": "2025-04-09",
+    "stage": "adopted",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting;noise;grid;water",
+    "summary": "Board amended the zoning ordinance to allow data centers only with a conditional use permit in the B3, M1, and M2 districts, by right only in the TM district, with standards for noise, generators, and site assessments.",
+    "source_title": "Frederick County Board of Supervisors agenda packet, September 23, 2026",
+    "source_url": "https://d3n9y02raazwpg.cloudfront.net/fcva/30d9c95e-a871-11f1-a183-005056a89546-6bae79ef-69d4-4bfe-bfc5-ee05abc27e14-1789746393.pdf",
+    "source_type": "primary",
+    "as_of": "2026-11-08",
+    "notes": "Date per County Attorney memo (packet p. 169); districts per staff memo (p. 163), which says the rules were readopted in the May 2026 Phase I update. Standards (Sec. 165-705.01, p. 165) required details of substations serving the data center and the anticipated transmission voltage before a rezoning or CUP. Ordinance itself not read."
+  },
+  {
+    "policy_id": "CULPEPER-ZTA-13-25-1",
+    "geoid": "51047",
+    "jurisdiction": "Culpeper County",
+    "date": "2025-09-02",
+    "stage": "adopted",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting",
+    "summary": "Board adopted a zoning text amendment requiring a conditional use permit for new data centers on industrially zoned land outside the Culpeper Technology Zone.",
+    "source_title": "Culpeper Quarterly Update: Culpeper puts guardrails on data centers (Piedmont Environmental Council)",
+    "source_url": "https://www.pecva.org/region/culpeper/culpeper-quarterly-update-culpeper-puts-guardrails-on-data-centers/",
+    "source_type": "reporting",
+    "as_of": "2026-11-08",
+    "notes": "Advocacy source, not news; no county record read. County documents and BoardDocs refused automated fetches. Amendment number ZTA-13-25-1 per a July 9, 2025 Planning Commission agenda seen only in search results. Search results attribute a unanimous vote and a scope of about 2,200 acres of light and 867 acres of heavy industrial land to Fredericksburg.com and the Star-Exponent; those articles not read. Tech Zone parcels stay by right. PEC later says the Board removed by-right status in all districts (https://www.pecva.org/region/culpeper/culpeper-update-moving-the-needle/), with no date or record found; not coded."
   }
 ]
