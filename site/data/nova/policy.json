@@ -334,5 +334,53 @@
     "source_type": "primary",
     "as_of": "2026-11-02",
     "notes": ""
+  },
+  {
+    "policy_id": "FREDERICK-ZO-DC-REMOVAL-2026",
+    "geoid": "51069",
+    "jurisdiction": "Frederick County",
+    "date": "2026-07-08",
+    "stage": "proposed",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting",
+    "summary": "Board unanimously directed staff to prepare a resolution scheduling public hearings on an ordinance amendment removing data centers as an allowed use from all zoning districts.",
+    "source_title": "Data Centers: Information Hub, Frederick County",
+    "source_url": "https://www.fcva.us/services/information-hub/data-centers",
+    "source_type": "primary",
+    "as_of": "2026-11-02",
+    "notes": "Also in county news release of 2026-07-15 (https://www.fcva.us/Home/Components/News/News/1703/). Board authorized the Planning Commission hearing at its 2026-08-12 meeting; Planning Commission recommended removal 2026-09-02 (county page). County Attorney advised 2026-04-22 that the Board cannot declare a moratorium on a land use but can amend the zoning ordinance (https://www.fcva.us/departments/public-information/dc-faq)."
+  },
+  {
+    "policy_id": "FREDERICK-ZO-DC-REMOVAL-2026",
+    "geoid": "51069",
+    "jurisdiction": "Frederick County",
+    "date": "2026-09-23",
+    "stage": "adopted",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting",
+    "summary": "Board adopted an ordinance amendment removing data centers as a permitted or conditional use across all zoning districts, along with their definition and additional regulations (Secs. 165-603.02, 165-1105.05, 165-705.01).",
+    "source_title": "Data Centers: Information Hub, Frederick County",
+    "source_url": "https://www.fcva.us/services/information-hub/data-centers",
+    "source_type": "primary",
+    "as_of": "2026-11-02",
+    "notes": "Effective date not stated on the county page; no effective row yet. Ordinance text and earlier rules not yet read (agenda packet is too large for our fetch tool). Vote 6-1 (Oates opposed) per reporting: NV Daily 2026-09-25 (https://www.nvdaily.com/nvdaily/data-centers-stripped-as-allowable-use/article_79da8f36-a547-5430-bf96-e07bcc68a7ef.html); county page gives no vote. A separate amendment removing the TM (Technology-Manufacturing Park) district was postponed to 2026-11-12. Status of the existing Middletown data center unclear: Virginia Business 2026-07-14 (https://virginiabusiness.com/frederick-supervisors-to-consider-countywide-ban-of-data-centers/) reports the planning director said it would be grandfathered; NV Daily reports it was left out of the grandfathering resolution."
+  },
+  {
+    "policy_id": "FREDERICK-GRANDFATHER-2026",
+    "geoid": "51069",
+    "jurisdiction": "Frederick County",
+    "date": "2026-09-23",
+    "stage": "adopted",
+    "action": "other",
+    "threshold_mw": "",
+    "topics": "siting",
+    "summary": "Board adopted a resolution letting two applications submitted before the amendment, Winchester Gateway and Virginia Technology Park, proceed only through 2026-10-28.",
+    "source_title": "Data Centers: Information Hub, Frederick County",
+    "source_url": "https://www.fcva.us/services/information-hub/data-centers",
+    "source_type": "primary",
+    "as_of": "2026-11-02",
+    "notes": "Passed unanimously, with the deadline moved from 2026-12-10 to 2026-10-28, per reporting: NV Daily 2026-09-25 (https://www.nvdaily.com/nvdaily/data-centers-stripped-as-allowable-use/article_79da8f36-a547-5430-bf96-e07bcc68a7ef.html). Outcomes per county page: Virginia Technology Park withdrawn; Winchester Gateway conditional use permit denied 2026-10-28. Those are project events for the events layer."
   }
 ]

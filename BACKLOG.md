@@ -20,11 +20,16 @@ data centers, minimal map. Anything here needs a named data source before it mov
 - First entries: PW Digital Gateway rezonings REZ2022-00032, -00033, -00036 (approved Dec 2023;
   voided after Court of Appeals order 2026-07-29), per https://www.pwcva.gov/department/planning-office/pw-digital-gateway.
   Exact approval date and votes still need a primary source.
+- Frederick County: Winchester Gateway CUP #03-26 denied 2026-10-28; Virginia Technology Park withdrawn,
+  per https://www.fcva.us/services/information-hub/data-centers.
+- Possible transmission line events: Frederick County's resolution opposing Valley Link's Valley North
+  line, per https://www.fcva.us/Home/Components/News/News/1703/. Meeting date still needs a source.
 
 ## Map: "rules in force" view
 - The v1 map shades each county by its latest policy row. That shows Loudoun as "proposed"
   (2026 pause) even though an adopted rule (end of by-right, 2025) is in force. Add a second
-  view: strongest rule currently in force per county, once several counties have rows.
+  view: strongest rule currently in force per county, once several counties have rows. Needed soon:
+  Frederick's removal of data centers and Fairfax's zoning standards currently shade the same color.
 
 ## Map: individual building footprints
 - The v1 basemap stops at zoom 14 (86 MB), where buildings are merged blocks. Zoom 15 has separate
