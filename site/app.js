@@ -57,6 +57,7 @@ function policyRow(row) {
     ? el("a", { href: row.source_url, target: "_blank", rel: "noopener", textContent: row.source_title || "source" })
     : "no source";
   return el("div", { className: "policy-row" }, [
+    row.town ? el("div", { className: "town", textContent: `Town of ${row.town}` }) : "",
     el("div", { className: "meta" }, [stageBadge(row.stage), ` ${row.date} · ${row.action.replaceAll("_", " ")}`]),
     el("p", { textContent: row.summary }),
     el("p", { className: "meta" }, [source, ` (${row.source_type}, checked ${row.as_of})`]),

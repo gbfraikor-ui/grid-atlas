@@ -25,6 +25,10 @@ data centers, minimal map. Anything here needs a named data source before it mov
 - Stafford County: Accokeek Center rezoning (Ord. O26-16) and substation CUP (Res. R26-128), approved 4-3
   on 2026-10-07 per Potomac Local (reporting); Potomac Creek Campus deferred 2026-07-07 over a family
   cemetery. County records not yet read.
+- Town of Warrenton: Amazon data center special use permit approved 4-3 in February 2023 (Blackwell Road);
+  lawsuit by Citizens for Fauquier County argues the 2021 zoning amendment was improperly adopted. Final
+  arguments 2026-06-15, no ruling as of 2026-08-03 per reporting. Check for a ruling.
+- Town boundaries as map shapes (Census places), so town rules can be drawn, not only listed.
 - Possible transmission line events: Frederick County's resolution opposing Valley Link's Valley North
   line, per https://www.fcva.us/Home/Components/News/News/1703/. Meeting date still needs a source.
 

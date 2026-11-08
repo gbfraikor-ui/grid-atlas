@@ -14,6 +14,7 @@ comes from the dates.
 | `policy_id` | shared id linking all stages of one policy, e.g. `VA-EO-22-2026` or a county ordinance number |
 | `geoid` | 5-digit county FIPS (e.g. `51107`), or 2-digit state FIPS (`51`) for statewide actions |
 | `jurisdiction` | name as in `regions/<region>.yaml`, or the state name for statewide actions |
+| `town` | for a town's own action, the town's name (e.g. `Warrenton`); `geoid` and `jurisdiction` are then the county the town sits in. Blank otherwise |
 | `date` | date this stage happened (YYYY-MM-DD), taken from the source |
 | `stage` | `proposed` · `adopted` · `effective` · `withdrawn` · `failed` · `rescinded` (reversed by the body that adopted it) · `voided` (struck down by a court) |
 | `action` | `zoning_amendment` · `comprehensive_plan` · `moratorium` · `application_pause` · `executive_order` · `legislation` · `other` |
@@ -39,3 +40,5 @@ comes from the dates.
   rezoning for one data center campus, belong in the events layer, not here.
 - `reporting` rows are allowed but get upgraded to `primary` when we find the document.
 - A jurisdiction with no rows shows on the map as "not yet researched", not "no policy".
+- Towns in Virginia set their own zoning inside a county. Town rows appear in the county's sidebar, labeled with
+  the town, but do not change the county's map shading.

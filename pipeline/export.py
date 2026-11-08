@@ -47,8 +47,9 @@ def export(region_id: str) -> None:
     policy = pd.read_csv(ROOT / "policy" / f"{region_id}.csv", dtype=str, keep_default_na=False)
 
     # Join a short policy summary onto each county. Statewide rows (2-digit geoid) are not
-    # attached to counties; the sidebar shows them separately.
-    local = policy[policy["geoid"].str.len() == 5]
+    # attached to counties; the sidebar shows them separately. Town rows are left out too, since
+    # a town's rule covers only the town, not the county it sits in.
+    local = policy[(policy["geoid"].str.len() == 5) & (policy["town"] == "")]
     latest = latest_rows(local)
     counties["policy_rows"] = counties["geoid"].map(local["geoid"].value_counts()).fillna(0).astype(int)
     counties["latest_stage"] = counties["geoid"].map(latest["stage"]).fillna("not_researched")
