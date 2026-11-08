@@ -7,7 +7,7 @@
     -77.0317,
     39.466
   ],
-  "generated_at": "2026-11-08T23:30:45+00:00",
+  "generated_at": "2026-11-08T23:38:35+00:00",
   "layers": {
     "basemap": {
       "status": "built",
@@ -39,7 +39,7 @@
     "policy": {
       "status": "built",
       "file": "policy.json",
-      "rows": 34,
+      "rows": 37,
       "note": "Hand-researched; each row carries its own source_url, source_type and as_of."
     },
     "transmission": {

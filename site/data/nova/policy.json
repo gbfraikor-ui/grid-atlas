@@ -542,5 +542,53 @@
     "source_type": "reporting",
     "as_of": "2026-11-08",
     "notes": "Advocacy source, not news; no county record read. County documents and BoardDocs refused automated fetches. Amendment number ZTA-13-25-1 per a July 9, 2025 Planning Commission agenda seen only in search results. Search results attribute a unanimous vote and a scope of about 2,200 acres of light and 867 acres of heavy industrial land to Fredericksburg.com and the Star-Exponent; those articles not read. Tech Zone parcels stay by right. PEC later says the Board removed by-right status in all districts (https://www.pecva.org/region/culpeper/culpeper-update-moving-the-needle/), with no date or record found; not coded."
+  },
+  {
+    "policy_id": "FAUQUIER-DC-POLICY-2023",
+    "geoid": "51061",
+    "jurisdiction": "Fauquier County",
+    "date": "2023-12-14",
+    "stage": "adopted",
+    "action": "other",
+    "threshold_mw": "",
+    "topics": "siting;grid;energy_cost;water;noise",
+    "summary": "Board data center policy: data centers only in Service Districts, within 1 mile of an existing transmission line, with all new electric lines underground at the applicant's cost.",
+    "source_title": "Fauquier County Board of Supervisors Data Center Policy, December 14, 2023",
+    "source_url": "https://fauquier-va.granicus.com/MetaViewer.php?view_id=3&clip_id=1282&meta_id=149234",
+    "source_type": "primary",
+    "as_of": "2026-11-08",
+    "notes": "Guidance for applications, case by case; siting criteria do not apply to BP and PCID land already approved for data centers (p. 1). Transmission and undergrounding criteria in sections I and on electric service. Date from the document's title; adoption record not read. Attached to the Board's 2026-10-08 agenda."
+  },
+  {
+    "policy_id": "FAUQUIER-TEXT-26-027401",
+    "geoid": "51061",
+    "jurisdiction": "Fauquier County",
+    "date": "2026-08-20",
+    "stage": "proposed",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting;grid;water",
+    "summary": "Planning Commission initiated a zoning text amendment on data centers in the Business Park and PCID districts.",
+    "source_title": "Ordinance adopting Zoning Ordinance Text Amendment TEXT-26-027401, Articles 3, 4, and 15 related to data centers",
+    "source_url": "https://fauquier-va.granicus.com/MetaViewer.php?view_id=3&clip_id=1282&meta_id=149238",
+    "source_type": "primary",
+    "as_of": "2026-11-08",
+    "notes": "Date from the ordinance's recitals (p. 1). Planning Commission recommended adoption after a 2026-09-17 public hearing."
+  },
+  {
+    "policy_id": "FAUQUIER-TEXT-26-027401",
+    "geoid": "51061",
+    "jurisdiction": "Fauquier County",
+    "date": "2026-10-08",
+    "stage": "adopted",
+    "action": "zoning_amendment",
+    "threshold_mw": "",
+    "topics": "siting;grid;water",
+    "summary": "Board removed data centers from the Business Park district and made them a special exception use in the PCID district, requiring closed-loop or air cooling without potable, ground, or surface water, and underground power lines.",
+    "source_title": "Fauquier County Board of Supervisors regular meeting minutes, October 8, 2026",
+    "source_url": "https://fauquier-va.granicus.com/MinutesViewer.php?view_id=3&clip_id=1282&doc_id=d3a8bd7e-c9a6-11f1-89ef-005056a84798",
+    "source_type": "primary",
+    "as_of": "2026-11-08",
+    "notes": "Vote 4-1, Culbertson opposed (minutes, item 12.B). Ordinance: https://fauquier-va.granicus.com/MetaViewer.php?view_id=3&clip_id=1282&meta_id=149238. Redline read from page images: before, data centers were permitted by right in BP and PCID if they used recycled water for cooling and placed all new power lines underground. PCID purpose now says data centers must be secondary and limits multi-gigawatt campuses (p. 3). Does not apply to existing PCID data centers, PCID site plans filed by 2026-08-20, Vint Hill Land Bay V projects, or land already zoned BP on 2026-08-20 (pp. 1-2). PCID exists only at Vint Hill, per FauquierNow 2026-10-12 (https://www.fauquiernow.com/news/fauquier-board-of-supervisors-moves-to-restrict-data-center-development-aaf69c6a)."
   }
 ]
