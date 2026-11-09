@@ -26,6 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: actions/configure-pages@v6
+      # Add this commit's id to the app.js and style.css addresses (app.js?v=91f46d6). Browsers cache
+      # files by address, so a new address after each deploy makes them fetch the new code.
+      - name: Stamp asset versions
+        run: sed -i "s/\(app\.js\|style\.css\)\"/\1?v=${GITHUB_SHA::7}\"/g" site/index.html
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site

@@ -301,6 +301,12 @@ function baseStyle(region) {
   }
   // PMTiles reads tiles out of one file using range requests. This teaches MapLibre the pmtiles:// address.
   maplibregl.addProtocol("pmtiles", new pmtiles.Protocol().tile);
+  // Paint the background the same color as land, so the edge of our basemap extract doesn't show as a strip.
+  const flavor = basemaps.namedFlavor("dark");
+  const layers = basemaps.layers("protomaps", flavor, { lang: "en" });
+  for (const layer of layers.filter((l) => l.type === "background")) {
+    layer.paint = { ...layer.paint, "background-color": flavor.earth };
+  }
   const root = new URL(".", location.href).href;  // MapLibre needs full URLs here
   return {
     version: 8,
@@ -313,7 +319,7 @@ function baseStyle(region) {
         attribution: `Basemap: <a href="https://github.com/protomaps/basemaps">Protomaps</a> &copy; <a href="${basemap.license_url}">OpenStreetMap</a>`,
       },
     },
-    layers: basemaps.layers("protomaps", basemaps.namedFlavor("dark"), { lang: "en" }),
+    layers,
   };
 }
 
