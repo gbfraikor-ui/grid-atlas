@@ -54,7 +54,10 @@ a { color: var(--link); }
 
 .stage { font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; color: #0b0e14; }
 
-.layer-row { display: flex; justify-content: space-between; margin: 4px 0; }
+.layer-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; cursor: pointer; }
+.layer-row input { accent-color: var(--link); margin: 0; }
+.layer-row input:disabled + span { color: var(--muted); }
+.layer-row .pending { margin-left: auto; }
 .pending { color: var(--muted); font-style: italic; }
 
 /* Phones: stack the sidebar under the map. */

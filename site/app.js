@@ -139,13 +139,27 @@ function renderStatewide(policy) {
   document.getElementById("statewide").replaceChildren(el("h2", { textContent: "Statewide" }), ...rows.map(policyRow));
 }
 
-function renderLayers(region) {
-  const rows = Object.entries(region.layers).map(([name, layer]) =>
-    el("div", { className: "layer-row" }, [
-      el("span", { textContent: name }),
-      el("span", { className: layer.status === "built" ? "" : "pending", textContent: layer.status }),
-    ]),
-  );
+// Which map layers each layer toggle controls. The basemap's own layers are found by their source.
+const LAYER_TOGGLES = {
+  basemap: { label: "Background map", ids: (map) => map.getStyle().layers.filter((l) => l.source === "protomaps").map((l) => l.id) },
+  counties: { label: "County and city boundaries", ids: () => ["counties-glow", "counties-line"] },
+  policy: { label: "Policy status shading", ids: () => ["counties-fill"] },
+  transmission: { label: "Transmission lines", ids: () => ["transmission-glow", "transmission-line", "transmission-hit"] },
+  substations: { label: "Substations", ids: () => ["substations-circle"] },
+};
+
+// One checkbox per layer. Unbuilt layers stay listed as "pending" so readers can see what's coming.
+function renderLayers(region, map) {
+  const rows = Object.entries(region.layers).map(([name, layer]) => {
+    const toggle = LAYER_TOGGLES[name];
+    const ids = toggle ? toggle.ids(map).filter((id) => map.getLayer(id)) : [];
+    const box = el("input", { type: "checkbox", checked: ids.length > 0, disabled: ids.length === 0 });
+    box.addEventListener("change", () => {
+      for (const id of ids) map.setLayoutProperty(id, "visibility", box.checked ? "visible" : "none");
+    });
+    const status = layer.status === "built" ? "" : el("span", { className: "pending", textContent: layer.status });
+    return el("label", { className: "layer-row" }, [box, el("span", { textContent: toggle ? toggle.label : name }), status]);
+  });
   document.getElementById("layers").replaceChildren(el("h2", { textContent: "Layers" }), ...rows);
 }
 
@@ -186,7 +200,6 @@ async function main() {
   document.getElementById("region-name").textContent = region.name;
   renderLegend(region);
   renderStatewide(policy);
-  renderLayers(region);
 
   const credits = [`Boundaries: <a href="${region.layers.counties.source_url}">U.S. Census Bureau</a>`];
   const lines = region.layers.transmission;
@@ -277,6 +290,9 @@ async function main() {
       map.on("mouseenter", "substations-circle", () => { map.getCanvas().style.cursor = "pointer"; });
       map.on("mouseleave", "substations-circle", () => { map.getCanvas().style.cursor = ""; });
     }
+
+    // Built last, once every map layer exists for the checkboxes to control.
+    renderLayers(region, map);
   });
 }
 
