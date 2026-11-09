@@ -68,6 +68,10 @@ const VOLTAGE_CLASSES = [
 ].reverse();
 const NO_VOLTAGE = { label: "No voltage tag in OSM", color: "#8a93a3", width: 1, radius: 3 };
 
+// Data center buildings: outlines from this zoom level in, one dot per building below it.
+const DATA_CENTER_COLOR = "#ff5fa2";
+const DATA_CENTER_ZOOM = 12;
+
 // --- small helpers ---------------------------------------------------------
 
 async function loadJSON(path) {
@@ -146,6 +150,15 @@ function renderLegend(region) {
     }
     legend.push(el("p", { className: "hint", textContent: lines.note }));
   }
+
+  const dcs = region.layers.data_centers;
+  if (dcs.status === "built") {
+    legend.push(
+      el("h2", { textContent: "Data centers" }),
+      legendRow(DATA_CENTER_COLOR, "Data center building mapped in OSM (a dot when zoomed out)"),
+      el("p", { className: "hint", textContent: dcs.note }),
+    );
+  }
   document.getElementById("legend").replaceChildren(...legend);
 }
 
@@ -169,6 +182,15 @@ function substationPopup(sub) {
     el("div", { textContent: sub.operator || "No operator tag in OSM" }),
     el("div", { textContent: sub.substation_type ? `OSM type: ${sub.substation_type}` : "No type tag in OSM" }),
     el("a", { href: `https://www.openstreetmap.org/${sub.osm_type}/${sub.osm_id}`, target: "_blank", rel: "noopener", textContent: "View in OpenStreetMap" }),
+  ]);
+}
+
+// Popup for a clicked data center building.
+function dataCenterPopup(dc) {
+  return el("div", { className: "line-popup" }, [
+    el("strong", { textContent: dc.name || "Unnamed data center" }),
+    el("div", { textContent: dc.operator || "No operator tag in OSM" }),
+    el("a", { href: `https://www.openstreetmap.org/${dc.osm_type}/${dc.osm_id}`, target: "_blank", rel: "noopener", textContent: "View in OpenStreetMap" }),
   ]);
 }
 
@@ -219,6 +241,7 @@ const LAYER_TOGGLES = {
   policy: { label: "Policy status shading", ids: () => ["counties-fill"] },
   transmission: { label: "Transmission lines", ids: () => ["transmission-glow", "transmission-line", "transmission-hit"] },
   substations: { label: "Substations", ids: () => ["substations-circle"] },
+  data_centers: { label: "Data center buildings", ids: () => ["data-centers-fill", "data-centers-line", "data-centers-dot"] },
 };
 
 // One checkbox per layer. Unbuilt layers stay listed as "pending" so readers can see what's coming.
@@ -278,7 +301,7 @@ async function main() {
 
   const credits = [`Boundaries: <a href="${region.layers.counties.source_url}">U.S. Census Bureau</a>`];
   const lines = region.layers.transmission;
-  if (lines.status === "built") credits.push(`Power lines and substations: &copy; <a href="${lines.license_url}">OpenStreetMap contributors</a>`);
+  if (lines.status === "built") credits.push(`Power lines, substations, data centers: &copy; <a href="${lines.license_url}">OpenStreetMap contributors</a>`);
 
   const map = new maplibregl.Map({
     container: "map",
@@ -314,6 +337,28 @@ async function main() {
       map.getCanvas().style.cursor = "";
     });
     map.on("click", "counties-fill", (e) => renderDetails(e.features[0].properties, policy, inForce));
+
+    const dcs = region.layers.data_centers;
+    if (dcs.status === "built") {
+      map.addSource("data-centers", { type: "geojson", data: `${DATA}/${dcs.file}` });
+      map.addSource("data-centers-points", { type: "geojson", data: `${DATA}/${dcs.points_file}` });
+      addLayer({ id: "data-centers-fill", type: "fill", source: "data-centers", minzoom: DATA_CENTER_ZOOM, paint: { "fill-color": DATA_CENTER_COLOR, "fill-opacity": 0.55 } });
+      addLayer({ id: "data-centers-line", type: "line", source: "data-centers", minzoom: DATA_CENTER_ZOOM, paint: { "line-color": DATA_CENTER_COLOR, "line-width": 1 } });
+      addLayer({
+        id: "data-centers-dot",
+        type: "circle",
+        source: "data-centers-points",
+        maxzoom: DATA_CENTER_ZOOM,
+        paint: { "circle-color": DATA_CENTER_COLOR, "circle-radius": 2.5, "circle-stroke-color": "#0b0e14", "circle-stroke-width": 0.5 },
+      });
+      for (const id of ["data-centers-fill", "data-centers-dot"]) {
+        map.on("click", id, (e) => {
+          new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(dataCenterPopup(e.features[0].properties)).addTo(map);
+        });
+        map.on("mouseenter", id, () => { map.getCanvas().style.cursor = "pointer"; });
+        map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; });
+      }
+    }
 
     if (lines.status === "built") {
       map.addSource("transmission", { type: "geojson", data: `${DATA}/${lines.file}` });

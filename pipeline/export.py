@@ -11,6 +11,7 @@ Writes: site/data/<region>/counties.geojson        counties + a summary of their
         site/data/<region>/in_force.json           rules in force per jurisdiction (policy/<region>_in_force.csv)
         site/data/<region>/transmission.geojson    power lines, if build_transmission.py has run
         site/data/<region>/substations.geojson     substations, if build_substations.py has run
+        site/data/<region>/data_centers*.geojson   data center buildings, if build_data_centers.py has run
         site/data/<region>/basemap.pmtiles         background map, if build_basemap.py has run
         site/data/<region>/region.json             name, bounds, layer list with sources
 """
@@ -31,7 +32,7 @@ from build_transmission import MIN_KV
 ROOT = Path(__file__).resolve().parent.parent
 
 # Layers the map will eventually have. Anything not built yet is shown as "pending".
-PLANNED_LAYERS = ["basemap", "counties", "policy", "transmission", "substations"]
+PLANNED_LAYERS = ["basemap", "counties", "policy", "transmission", "substations", "data_centers"]
 
 
 def latest_rows(policy: pd.DataFrame) -> pd.DataFrame:
@@ -94,13 +95,22 @@ def export(region_id: str) -> None:
         },
     }
     # Optional layers: exported if their builder has run, otherwise they stay "pending".
-    for layer in ["transmission", "substations"]:
+    osm_notes = {
+        "transmission": "Volunteer-mapped OpenStreetMap data, not an official record of the grid.",
+        "substations": "Volunteer-mapped OpenStreetMap data, not an official record of the grid.",
+        "data_centers": "Data center buildings mapped in OpenStreetMap: mostly built ones, rarely approved or planned "
+                        "projects, and one campus can be several buildings. Not a facility count; no capacity.",
+    }
+    for layer, note in osm_notes.items():
         layer_file = ROOT / "data" / "processed" / region_id / f"{layer}.geojson"
         if not layer_file.exists():
             continue
         source = yaml.safe_load((ROOT / "sources" / f"{region['osm_source']}.yaml").read_text(encoding="utf-8"))
         osm_record = json.loads((ROOT / "data" / "raw" / source["id"] / "_fetch.json").read_text(encoding="utf-8"))
         shutil.copyfile(layer_file, out_dir / layer_file.name)
+        points_file = layer_file.with_name(f"{layer}_points.geojson")  # zoomed-out companion, if the builder made one
+        if points_file.exists():
+            shutil.copyfile(points_file, out_dir / points_file.name)
         built[layer] = {
             "status": "built",
             "file": layer_file.name,
@@ -110,8 +120,10 @@ def export(region_id: str) -> None:
             "license_url": source["license_url"],
             "retrieved_at": osm_record["retrieved_at"],
             "min_kv": MIN_KV,
-            "note": "Volunteer-mapped OpenStreetMap data, not an official record of the grid.",
+            "note": note,
         }
+        if points_file.exists():
+            built[layer]["points_file"] = points_file.name
 
     basemap_file = ROOT / "data" / "processed" / region_id / "basemap.pmtiles"
     if basemap_file.exists():

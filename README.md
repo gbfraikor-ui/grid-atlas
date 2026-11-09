@@ -10,6 +10,7 @@ grid infrastructure, and land-use policy.
 |---|---|---|
 | County and city boundaries | U.S. Census Bureau Cartographic Boundary Files, 2025 | Public domain |
 | Transmission lines, substations | OpenStreetMap, via a dated Geofabrik extract | ODbL 1.0 |
+| Data center buildings | OpenStreetMap, same extract | ODbL 1.0 |
 | Background map | Protomaps Basemap, from OpenStreetMap and Natural Earth | ODbL 1.0 |
 | Land-use and data center policy | Hand-researched in [policy/](policy/), with a source on every row | See each row's source |
 
@@ -17,9 +18,13 @@ grid infrastructure, and land-use policy.
 - A jurisdiction marked "not yet researched" has no rows here. That does not mean it has no policy.
 - OpenStreetMap is volunteer-mapped, not an official record of the grid. Coverage and tags can be
   missing or out of date. Line lengths and substation counts describe what is mapped.
+- Data center buildings are what OSM volunteers have mapped: mostly built facilities, rarely approved or
+  planned ones (Stafford's five approved campuses show none), and a campus can be several buildings. Don't
+  read the layer as a facility count, and it has no capacity figures.
+- "Rules in force" shading is this project's reading of each jurisdiction's rules, with the policy rows it
+  rests on listed in [policy/nova_in_force.csv](policy/nova_in_force.csv).
 - "Transmission" here means 69 kV and up. That is this project's working definition, set as
   `MIN_KV` in [pipeline/build_transmission.py](pipeline/build_transmission.py).
-- County shading shows the stage of the latest policy row, not the strongest rule in force.
 
 ## Run it
 
@@ -39,6 +44,7 @@ uv run python pipeline/fetch.py
 uv run python pipeline/build_counties.py nova
 uv run python pipeline/build_transmission.py nova
 uv run python pipeline/build_substations.py nova
+uv run python pipeline/build_data_centers.py nova
 uv run python pipeline/vendor_basemap.py
 uv run python pipeline/build_basemap.py nova
 uv run python pipeline/export.py nova

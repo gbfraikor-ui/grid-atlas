@@ -7,7 +7,7 @@
     -77.0317,
     39.466
   ],
-  "generated_at": "2026-11-09T00:23:45+00:00",
+  "generated_at": "2026-11-09T00:43:36+00:00",
   "layers": {
     "basemap": {
       "status": "built",
@@ -63,6 +63,18 @@
       "retrieved_at": "2026-11-03T00:12:57+00:00",
       "min_kv": 69,
       "note": "Volunteer-mapped OpenStreetMap data, not an official record of the grid."
+    },
+    "data_centers": {
+      "status": "built",
+      "file": "data_centers.geojson",
+      "source_title": "OpenStreetMap data extract for Virginia, through 2026-11-01",
+      "source_url": "https://download.geofabrik.de/north-america/us/virginia-261101.osm.pbf",
+      "license": "Open Database License (ODbL) 1.0",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "retrieved_at": "2026-11-03T00:12:57+00:00",
+      "min_kv": 69,
+      "note": "Data center buildings mapped in OpenStreetMap: mostly built ones, rarely approved or planned projects, and one campus can be several buildings. Not a facility count; no capacity.",
+      "points_file": "data_centers_points.geojson"
     }
   }
 }
