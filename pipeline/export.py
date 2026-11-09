@@ -8,6 +8,7 @@ Reads:  data/processed/<region>/counties.geojson   (from build_counties.py)
         data/raw/counties/_fetch.json              (provenance)
 Writes: site/data/<region>/counties.geojson        counties + a summary of their policy rows
         site/data/<region>/policy.json             every policy row, for the sidebar
+        site/data/<region>/in_force.json           rules in force per jurisdiction (policy/<region>_in_force.csv)
         site/data/<region>/transmission.geojson    power lines, if build_transmission.py has run
         site/data/<region>/substations.geojson     substations, if build_substations.py has run
         site/data/<region>/basemap.pmtiles         background map, if build_basemap.py has run
@@ -55,7 +56,21 @@ def export(region_id: str) -> None:
     counties["latest_stage"] = counties["geoid"].map(latest["stage"]).fillna("not_researched")
     counties["latest_action"] = counties["geoid"].map(latest["action"]).fillna("")
     counties["latest_date"] = counties["geoid"].map(latest["date"]).fillna("")
+
+    # Rules in force: our reading of each jurisdiction's current rules, with the policy rows it rests on.
+    in_force_file = ROOT / "policy" / f"{region_id}_in_force.csv"
+    in_force = pd.read_csv(in_force_file, dtype=str, keep_default_na=False) if in_force_file.exists() else pd.DataFrame(
+        columns=["geoid", "town", "category", "basis", "summary"])
+    cited = {pid for basis in in_force["basis"] for pid in basis.split(";")}
+    missing = cited - set(policy["policy_id"])
+    if missing:
+        raise SystemExit(f"{in_force_file.name} cites policy_ids not in the policy table: {sorted(missing)}")
+    county_level = in_force[in_force["town"] == ""].set_index("geoid")
+    counties["in_force"] = counties["geoid"].map(county_level["category"]).fillna("not_researched")
     counties.to_file(out_dir / "counties.geojson", driver="GeoJSON")
+    (out_dir / "in_force.json").write_text(
+        json.dumps(in_force.to_dict(orient="records"), indent=2), encoding="utf-8", newline="\n"
+    )
 
     (out_dir / "policy.json").write_text(
         json.dumps(policy.to_dict(orient="records"), indent=2), encoding="utf-8", newline="\n"
@@ -114,7 +129,7 @@ def export(region_id: str) -> None:
     (out_dir / "region.json").write_text(json.dumps(region_json, indent=2), encoding="utf-8", newline="\n")
 
     print(f"Exported {region['name']} to {out_dir.relative_to(ROOT)}")
-    print(counties[["geoid", "name", "policy_rows", "latest_stage", "latest_date"]].to_string(index=False))
+    print(counties[["geoid", "name", "policy_rows", "latest_stage", "latest_date", "in_force"]].to_string(index=False))
     print("Layers:", {k: v["status"] for k, v in region_json["layers"].items()})
 
 

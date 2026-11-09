@@ -27,6 +27,22 @@ comes from the dates.
 | `as_of` | date we last checked the source (YYYY-MM-DD) |
 | `notes` | anything uncertain or easy to misread, with page or section references |
 
+## Rules in force (`<region>_in_force.csv`)
+
+A separate, smaller table: our reading of what a new data center applicant faces today in each
+jurisdiction. It is an interpretation, so every row names the policy rows it rests on in `basis`
+(`policy_id`s separated by `;`), and the export stops if a `policy_id` doesn't exist.
+
+| category | meaning |
+|---|---|
+| `not_allowed` | no zoning district permits new data centers |
+| `approval_only` | every new data center needs a special exception, conditional or special use permit, or similar Board approval |
+| `by_right_limited` | still by right somewhere, limited by zone, overlay, or size |
+| `unclear` | rules exist, but the text that would decide the category hasn't been read |
+
+Grandfathered projects never set the category; note them instead. Columns: `geoid`, `jurisdiction`,
+`town`, `category`, `basis`, `summary`, `as_of`, `notes`. Update a row whenever a new policy row changes the answer.
+
 ## Rules
 - No row without a date that appears in the source.
 - Record every stage. If a source says a policy took effect on signing, add both an

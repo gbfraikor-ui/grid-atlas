@@ -52,7 +52,14 @@ a { color: var(--link); }
 .policy-row p { margin: 4px 0; }
 .policy-row details { font-size: 12px; color: var(--muted); }
 
-.stage { font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; color: #0b0e14; }
+.view-switch { display: flex; gap: 16px; margin: 0 0 8px; }
+.view-switch label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.view-switch input { accent-color: var(--link); margin: 0; }
+.in-force { border-left: 3px solid var(--border); padding: 4px 0 4px 10px; margin: 8px 0 12px; }
+.in-force p { margin: 6px 0 2px; }
+.in-force details { font-size: 12px; color: var(--muted); }
+
+.stage {font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; color: #0b0e14; }
 
 .layer-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; cursor: pointer; }
 .layer-row input { accent-color: var(--link); margin: 0; }

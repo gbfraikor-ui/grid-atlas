@@ -1,0 +1,92 @@
+[
+  {
+    "geoid": "51069",
+    "jurisdiction": "Frederick County",
+    "town": "",
+    "category": "not_allowed",
+    "basis": "FREDERICK-ZO-DC-REMOVAL-2026",
+    "summary": "Data centers are not a permitted or conditional use in any zoning district.",
+    "as_of": "2026-11-08",
+    "notes": "Ordinance adopted 2026-09-23; effective date not stated. Removal of the TM district is still pending. The existing Middletown data center predates the ban."
+  },
+  {
+    "geoid": "51107",
+    "jurisdiction": "Loudoun County",
+    "town": "",
+    "category": "approval_only",
+    "basis": "LOUDOUN-ZOAM-2024-0001;LOUDOUN-CPAM-2024-0001",
+    "summary": "New data centers need a Special Exception where they were previously allowed by right.",
+    "as_of": "2026-11-08",
+    "notes": "Applications accepted before 2025-02-12 may proceed by right under the grandfathering resolution. The disputed 2026 pause on Board votes does not change the category."
+  },
+  {
+    "geoid": "51061",
+    "jurisdiction": "Fauquier County",
+    "town": "",
+    "category": "approval_only",
+    "basis": "FAUQUIER-TEXT-26-027401",
+    "summary": "New data centers need a special exception and are limited to the PCID district, which exists only at Vint Hill.",
+    "as_of": "2026-11-08",
+    "notes": "Exempt: existing PCID data centers, PCID site plans filed by 2026-08-20, Vint Hill Land Bay V projects, and land zoned Business Park on 2026-08-20. Those are grandfathered, not open to new applicants."
+  },
+  {
+    "geoid": "51059",
+    "jurisdiction": "Fairfax County",
+    "town": "",
+    "category": "by_right_limited",
+    "basis": "FAIRFAX-ZO-112.1-2024-9",
+    "summary": "By right in C-3, C-4, and I-2 to I-6 under size caps (none in I-5 or I-6) and distance standards; larger or closer needs a special exception.",
+    "as_of": "2026-11-08",
+    "notes": "Distance standards: 200 ft from residential lot lines, 1 mile from Metro entrances."
+  },
+  {
+    "geoid": "51153",
+    "jurisdiction": "Prince William County",
+    "town": "",
+    "category": "by_right_limited",
+    "basis": "PWC-DPA2026-00006",
+    "summary": "By right only on overlay parcels that meet one of five eligibility pathways; elsewhere a Special Use Permit is required.",
+    "as_of": "2026-11-08",
+    "notes": "The overlay is closed to new map additions and its last eligibility window ends 2026-12-21, so in practice it may work closer to Board approval only after that date."
+  },
+  {
+    "geoid": "51179",
+    "jurisdiction": "Stafford County",
+    "town": "",
+    "category": "by_right_limited",
+    "basis": "STAFFORD-O23-24;STAFFORD-O25-29;STAFFORD-CUP-M2-2025",
+    "summary": "By right in the M-2 heavy industrial district and the ICTP overlay, under 750-ft setbacks and other standards.",
+    "as_of": "2026-11-08",
+    "notes": "A 2025 amendment to require a conditional use permit in M-2 failed. The Board may modify setbacks in a rezoning."
+  },
+  {
+    "geoid": "51047",
+    "jurisdiction": "Culpeper County",
+    "town": "",
+    "category": "by_right_limited",
+    "basis": "CULPEPER-ZTA-13-25-1",
+    "summary": "By right in the Culpeper Technology Zone; a conditional use permit is required on other industrial land.",
+    "as_of": "2026-11-08",
+    "notes": "Weak basis: one advocacy source, no county record read. The same source says the Board later removed by-right status in all districts, which would make this approval_only; unverified."
+  },
+  {
+    "geoid": "51683",
+    "jurisdiction": "Manassas city",
+    "town": "",
+    "category": "unclear",
+    "basis": "MANASSAS-O-2026-455",
+    "summary": "Data center standards adopted in 2026; whether data centers are by right was not determined.",
+    "as_of": "2026-11-08",
+    "notes": "Ordinance text not read."
+  },
+  {
+    "geoid": "51061",
+    "jurisdiction": "Fauquier County",
+    "town": "Warrenton",
+    "category": "not_allowed",
+    "basis": "WARRENTON-ZOTA-25-1",
+    "summary": "Data centers are not a permissible use anywhere in the town.",
+    "as_of": "2026-11-08",
+    "notes": "Adopted 2025-07-08. Does not affect Amazon's 2023 special use permit, which is in litigation."
+  }
+]

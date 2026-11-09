@@ -21,6 +21,44 @@ const STAGE_LABELS = {
   not_researched: "Not yet researched",
 };
 
+// Fill color by the rules a new data center applicant faces today (policy/<region>_in_force.csv).
+const IN_FORCE = {
+  not_allowed: { label: "Not allowed in any zoning district", color: "#d9534f" },
+  approval_only: { label: "Board approval required for every new one", color: "#e8a94a" },
+  by_right_limited: { label: "By right in limited areas", color: "#6dbb7a" },
+  unclear: { label: "Rules adopted, category unclear", color: "#5b6b88" },
+  not_researched: { label: "Not yet researched", color: "#1c222d" },
+};
+
+// The two ways to shade counties. Each names the county property it reads and its legend entries.
+const VIEWS = {
+  in_force: {
+    label: "Rules in force",
+    property: "in_force",
+    colors: Object.fromEntries(Object.entries(IN_FORCE).map(([key, c]) => [key, c.color])),
+    legend: Object.values(IN_FORCE).map((c) => [c.color, c.label]),
+  },
+  latest: {
+    label: "Latest action",
+    property: "latest_stage",
+    colors: STAGE_COLORS,
+    legend: Object.entries(STAGE_LABELS).map(([stage, label]) => [STAGE_COLORS[stage], label]),
+  },
+};
+let view = "in_force";
+let mapRef = null;  // set once the map exists, so the view switch can recolor it
+
+function fillColor() {
+  const v = VIEWS[view];
+  return ["match", ["get", v.property], ...Object.entries(v.colors).flat(), "#5b6b88"];
+}
+
+// Light enough to see the basemap through. Counties with no research get no fill at all.
+function fillOpacity() {
+  const hover = ["boolean", ["feature-state", "hover"], false];
+  return ["case", ["==", ["get", VIEWS[view].property], "not_researched"], ["case", hover, 0.12, 0], hover, 0.45, 0.28];
+}
+
 // Color, line width, and circle size by highest voltage, lowest class first. "from" is the bottom of each class in kV.
 const VOLTAGE_CLASSES = [
   { from: 500, label: "500 kV", color: "#ffffff", width: 2.6, radius: 6 },
@@ -73,9 +111,28 @@ function legendRow(color, label, className = "swatch") {
   return el("div", { className: "legend-row" }, [swatch, label]);
 }
 
+// Two radio buttons that switch the county shading between views.
+function viewSwitch(region) {
+  return el("div", { className: "view-switch" }, Object.entries(VIEWS).map(([key, v]) => {
+    const radio = el("input", { type: "radio", name: "view", value: key, checked: key === view });
+    radio.addEventListener("change", () => {
+      view = key;
+      if (mapRef) {
+        mapRef.setPaintProperty("counties-fill", "fill-color", fillColor());
+        mapRef.setPaintProperty("counties-fill", "fill-opacity", fillOpacity());
+      }
+      renderLegend(region);
+    });
+    return el("label", {}, [radio, v.label]);
+  }));
+}
+
 function renderLegend(region) {
-  const rows = Object.entries(STAGE_LABELS).map(([stage, label]) => legendRow(STAGE_COLORS[stage], label));
-  const legend = [el("h2", { textContent: "Policy status" }), ...rows];
+  const rows = VIEWS[view].legend.map(([color, label]) => legendRow(color, label));
+  const legend = [el("h2", { textContent: "County shading" }), viewSwitch(region), ...rows];
+  if (view === "in_force") {
+    legend.push(el("p", { className: "hint", textContent: "Our reading of what a new data center applicant faces today. Click a county for the basis." }));
+  }
 
   const lines = region.layers.transmission;
   if (lines.status === "built") {
@@ -122,13 +179,29 @@ function byVoltage(property) {
   return ["case", noVoltage, NO_VOLTAGE[property], ["step", ["to-number", ["get", "max_kv"], 0], VOLTAGE_CLASSES[0][property], ...steps]];
 }
 
-function renderDetails(county, policy) {
+// The rules-in-force reading for a county and any towns in it, with the policy rows it rests on.
+function inForceBlock(entry) {
+  const category = IN_FORCE[entry.category] || IN_FORCE.unclear;
+  const badge = el("span", { className: "stage", textContent: category.label });
+  badge.style.background = category.color;
+  return el("div", { className: "in-force" }, [
+    entry.town ? el("div", { className: "town", textContent: `Town of ${entry.town}` }) : "",
+    badge,
+    el("p", { textContent: entry.summary }),
+    el("p", { className: "meta", textContent: `Based on: ${entry.basis.replaceAll(";", ", ")} · as of ${entry.as_of}` }),
+    entry.notes ? el("details", {}, [el("summary", { textContent: "Notes" }), entry.notes]) : "",
+  ]);
+}
+
+function renderDetails(county, policy, inForce) {
   const rows = policy.filter((r) => r.geoid === county.geoid).sort((a, b) => b.date.localeCompare(a.date));
+  const readings = inForce.filter((r) => r.geoid === county.geoid).sort((a, b) => a.town.localeCompare(b.town));
   const body = rows.length
     ? rows.map(policyRow)
     : [el("p", { className: "hint", textContent: "Not yet researched. No rows does not mean no policy." })];
   document.getElementById("details").replaceChildren(
     el("h3", { textContent: county.name }),
+    ...readings.map(inForceBlock),
     el("p", { className: "meta", textContent: `${rows.length} policy rows, newest first` }),
     ...body,
   );
@@ -195,7 +268,9 @@ function baseStyle(region) {
 }
 
 async function main() {
-  const [region, policy] = await Promise.all([loadJSON(`${DATA}/region.json`), loadJSON(`${DATA}/policy.json`)]);
+  const [region, policy, inForce] = await Promise.all([
+    loadJSON(`${DATA}/region.json`), loadJSON(`${DATA}/policy.json`), loadJSON(`${DATA}/in_force.json`),
+  ]);
 
   document.getElementById("region-name").textContent = region.name;
   renderLegend(region);
@@ -212,6 +287,7 @@ async function main() {
     fitBoundsOptions: { padding: 40 },
     attributionControl: { compact: false, customAttribution: credits },
   });
+  mapRef = map;
 
   map.on("load", () => {
     // Our layers go under the basemap's labels, so place names stay readable on top.
@@ -220,22 +296,7 @@ async function main() {
 
     map.addSource("counties", { type: "geojson", data: `${DATA}/counties.geojson`, promoteId: "geoid" });
 
-    const fillColor = ["match", ["get", "latest_stage"], ...Object.entries(STAGE_COLORS).flat(), STAGE_COLORS.withdrawn];
-    addLayer({
-      id: "counties-fill",
-      type: "fill",
-      source: "counties",
-      paint: {
-        "fill-color": fillColor,
-        // Light enough to see the basemap through. Counties with no research get no fill at all.
-        "fill-opacity": [
-          "case",
-          ["==", ["get", "latest_stage"], "not_researched"], ["case", ["boolean", ["feature-state", "hover"], false], 0.12, 0],
-          ["boolean", ["feature-state", "hover"], false], 0.45,
-          0.28,
-        ],
-      },
-    });
+    addLayer({ id: "counties-fill", type: "fill", source: "counties", paint: { "fill-color": fillColor(), "fill-opacity": fillOpacity() } });
     // Two outline layers: a wide blurred one for glow, a thin sharp one on top.
     addLayer({ id: "counties-glow", type: "line", source: "counties", paint: { "line-color": "#8ab4f8", "line-width": 6, "line-blur": 6, "line-opacity": 0.25 } });
     addLayer({ id: "counties-line", type: "line", source: "counties", paint: { "line-color": "#c9d6ea", "line-width": 0.8 } });
@@ -252,7 +313,7 @@ async function main() {
       hovered = null;
       map.getCanvas().style.cursor = "";
     });
-    map.on("click", "counties-fill", (e) => renderDetails(e.features[0].properties, policy));
+    map.on("click", "counties-fill", (e) => renderDetails(e.features[0].properties, policy, inForce));
 
     if (lines.status === "built") {
       map.addSource("transmission", { type: "geojson", data: `${DATA}/${lines.file}` });
