@@ -45,7 +45,20 @@ const VIEWS = {
     legend: Object.entries(STAGE_LABELS).map(([stage, label]) => [STAGE_COLORS[stage], label]),
   },
 };
-let view = "in_force";
+// Share links: the part of the address after # holds map=zoom/lat/lng (kept up to date by MapLibre),
+// view= (county shading), and off= (layers turned off), so a link reopens the same view.
+function hashParams() {
+  return new URLSearchParams(location.hash.slice(1));
+}
+function setHashParam(key, value) {
+  const params = hashParams();
+  if (value) params.set(key, value);
+  else params.delete(key);
+  // Written by hand, not params.toString(), so the slashes in map=zoom/lat/lng stay readable to MapLibre.
+  history.replaceState(null, "", `#${[...params].map(([k, v]) => `${k}=${v}`).join("&")}`);
+}
+
+let view = VIEWS[hashParams().get("view")] ? hashParams().get("view") : "in_force";
 let mapRef = null;  // set once the map exists, so the view switch can recolor it
 
 function fillColor() {
@@ -124,6 +137,7 @@ function viewSwitch(region) {
     const radio = el("input", { type: "radio", name: "view", value: key, checked: key === view });
     radio.addEventListener("change", () => {
       view = key;
+      setHashParam("view", key);
       if (mapRef) {
         mapRef.setPaintProperty("counties-fill", "fill-color", fillColor());
         mapRef.setPaintProperty("counties-fill", "fill-opacity", fillOpacity());
@@ -251,12 +265,20 @@ const LAYER_TOGGLES = {
 
 // One checkbox per layer. Unbuilt layers stay listed as "pending" so readers can see what's coming.
 function renderLayers(region, map) {
+  const off = new Set((hashParams().get("off") || "").split(",").filter(Boolean));
   const rows = Object.entries(region.layers).map(([name, layer]) => {
     const toggle = LAYER_TOGGLES[name];
     const ids = toggle ? toggle.ids(map).filter((id) => map.getLayer(id)) : [];
-    const box = el("input", { type: "checkbox", checked: ids.length > 0, disabled: ids.length === 0 });
-    box.addEventListener("change", () => {
+    const box = el("input", { type: "checkbox", checked: ids.length > 0 && !off.has(name), disabled: ids.length === 0 });
+    const apply = () => {
       for (const id of ids) map.setLayoutProperty(id, "visibility", box.checked ? "visible" : "none");
+    };
+    apply();  // honors off= from a share link
+    box.addEventListener("change", () => {
+      apply();
+      if (box.checked) off.delete(name);
+      else off.add(name);
+      setHashParam("off", [...off].join(","));
     });
     const status = layer.status === "built" ? "" : el("span", { className: "pending", textContent: layer.status });
     return el("label", { className: "layer-row" }, [box, el("span", { textContent: toggle ? toggle.label : name }), status]);
@@ -301,6 +323,12 @@ async function main() {
   ]);
 
   document.getElementById("region-name").textContent = region.name;
+  const copyButton = document.getElementById("copy-link");
+  copyButton.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(location.href);
+    copyButton.textContent = "Link copied";
+    setTimeout(() => { copyButton.textContent = "Copy link to this view"; }, 2000);
+  });
   renderLegend(region);
   renderStatewide(policy);
 
@@ -313,6 +341,7 @@ async function main() {
     style: baseStyle(region),
     bounds: region.bounds,
     fitBoundsOptions: { padding: 40 },
+    hash: "map",  // keeps map=zoom/lat/lng in the address; a share link's position wins over bounds
     attributionControl: { compact: false, customAttribution: credits },
   });
   mapRef = map;
@@ -405,10 +434,11 @@ async function main() {
         paint: {
           // Bigger footprints count more, capped so one campus-sized outline can't swamp the map.
           "heatmap-weight": ["interpolate", ["linear"], ["get", "footprint_m2"], 0, 0.25, 12000, 0.6, 50000, 1],
-          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 7, 0.8, 12, 2],
-          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 7, 14, 10, 24, 12, 34],
+          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 7, 0.8, 12, 1],
+          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 7, 14, 10, 22, 12, 26],
           "heatmap-color": HEAT_COLORS,
-          "heatmap-opacity": ["interpolate", ["linear"], ["zoom"], DATA_CENTER_ZOOM - 0.5, 0.75, DATA_CENTER_ZOOM + 1, 0],
+          // Starts fading a zoom level and a half before the outlines appear, so the two don't fight.
+          "heatmap-opacity": ["interpolate", ["linear"], ["zoom"], DATA_CENTER_ZOOM - 1.5, 0.75, DATA_CENTER_ZOOM + 0.5, 0],
         },
       });
     }
