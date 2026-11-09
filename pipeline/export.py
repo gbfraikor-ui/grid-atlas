@@ -16,6 +16,7 @@ Writes: site/data/<region>/counties.geojson        counties + a summary of their
 """
 
 import argparse
+import filecmp
 import json
 import shutil
 from datetime import datetime, timezone
@@ -114,7 +115,10 @@ def export(region_id: str) -> None:
 
     basemap_file = ROOT / "data" / "processed" / region_id / "basemap.pmtiles"
     if basemap_file.exists():
-        shutil.copyfile(basemap_file, out_dir / basemap_file.name)
+        # 86 MB and rarely changes: only copy when the site's copy differs.
+        site_copy = out_dir / basemap_file.name
+        if not (site_copy.exists() and filecmp.cmp(basemap_file, site_copy, shallow=False)):
+            shutil.copyfile(basemap_file, site_copy)
         record = json.loads(basemap_file.with_suffix(".json").read_text(encoding="utf-8"))
         built["basemap"] = {"status": "built", "file": basemap_file.name, **record}
 
