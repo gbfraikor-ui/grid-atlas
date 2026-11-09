@@ -68,9 +68,12 @@ const VOLTAGE_CLASSES = [
 ].reverse();
 const NO_VOLTAGE = { label: "No voltage tag in OSM", color: "#8a93a3", width: 1, radius: 3 };
 
-// Data center buildings: outlines from this zoom level in, one dot per building below it.
+// Data center buildings: outlines from this zoom level in, a heat map of footprint below it.
 const DATA_CENTER_COLOR = "#ff5fa2";
 const DATA_CENTER_ZOOM = 12;
+// Heat map colors from low to high density: clear, through the data center pink, to near white.
+const HEAT_STOPS = [[0, "rgba(255,95,162,0)"], [0.2, "rgba(255,95,162,0.35)"], [0.5, "#ff5fa2"], [0.8, "#ffb3d6"], [1, "#fff4f9"]];
+const HEAT_COLORS = ["interpolate", ["linear"], ["heatmap-density"], ...HEAT_STOPS.flat()];
 
 // --- small helpers ---------------------------------------------------------
 
@@ -155,7 +158,8 @@ function renderLegend(region) {
   if (dcs.status === "built") {
     legend.push(
       el("h2", { textContent: "Data centers" }),
-      legendRow(DATA_CENTER_COLOR, "Data center building mapped in OSM (a dot when zoomed out)"),
+      legendRow(`linear-gradient(to right, ${HEAT_STOPS.slice(1).map(([, c]) => c).join(", ")})`, "Concentration of mapped footprint (zoomed out)", "swatch-heat"),
+      legendRow(DATA_CENTER_COLOR, "Data center building mapped in OSM (zoom in)"),
       el("p", { className: "hint", textContent: dcs.note }),
     );
   }
@@ -190,6 +194,7 @@ function dataCenterPopup(dc) {
   return el("div", { className: "line-popup" }, [
     el("strong", { textContent: dc.name || "Unnamed data center" }),
     el("div", { textContent: dc.operator || "No operator tag in OSM" }),
+    dc.footprint_m2 > 0 ? el("div", { textContent: `Footprint about ${Math.round((dc.footprint_m2 * 10.7639) / 1000) * 1000} sq ft (ground area)` }) : "",
     el("a", { href: `https://www.openstreetmap.org/${dc.osm_type}/${dc.osm_id}`, target: "_blank", rel: "noopener", textContent: "View in OpenStreetMap" }),
   ]);
 }
@@ -241,7 +246,7 @@ const LAYER_TOGGLES = {
   policy: { label: "Policy status shading", ids: () => ["counties-fill"] },
   transmission: { label: "Transmission lines", ids: () => ["transmission-glow", "transmission-line", "transmission-hit"] },
   substations: { label: "Substations", ids: () => ["substations-circle"] },
-  data_centers: { label: "Data center buildings", ids: () => ["data-centers-fill", "data-centers-line", "data-centers-dot"] },
+  data_centers: { label: "Data center buildings", ids: () => ["data-centers-heat", "data-centers-fill", "data-centers-line"] },
 };
 
 // One checkbox per layer. Unbuilt layers stay listed as "pending" so readers can see what's coming.
@@ -344,20 +349,11 @@ async function main() {
       map.addSource("data-centers-points", { type: "geojson", data: `${DATA}/${dcs.points_file}` });
       addLayer({ id: "data-centers-fill", type: "fill", source: "data-centers", minzoom: DATA_CENTER_ZOOM, paint: { "fill-color": DATA_CENTER_COLOR, "fill-opacity": 0.55 } });
       addLayer({ id: "data-centers-line", type: "line", source: "data-centers", minzoom: DATA_CENTER_ZOOM, paint: { "line-color": DATA_CENTER_COLOR, "line-width": 1 } });
-      addLayer({
-        id: "data-centers-dot",
-        type: "circle",
-        source: "data-centers-points",
-        maxzoom: DATA_CENTER_ZOOM,
-        paint: { "circle-color": DATA_CENTER_COLOR, "circle-radius": 2.5, "circle-stroke-color": "#0b0e14", "circle-stroke-width": 0.5 },
+      map.on("click", "data-centers-fill", (e) => {
+        new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(dataCenterPopup(e.features[0].properties)).addTo(map);
       });
-      for (const id of ["data-centers-fill", "data-centers-dot"]) {
-        map.on("click", id, (e) => {
-          new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(dataCenterPopup(e.features[0].properties)).addTo(map);
-        });
-        map.on("mouseenter", id, () => { map.getCanvas().style.cursor = "pointer"; });
-        map.on("mouseleave", id, () => { map.getCanvas().style.cursor = ""; });
-      }
+      map.on("mouseenter", "data-centers-fill", () => { map.getCanvas().style.cursor = "pointer"; });
+      map.on("mouseleave", "data-centers-fill", () => { map.getCanvas().style.cursor = ""; });
     }
 
     if (lines.status === "built") {
@@ -396,6 +392,27 @@ async function main() {
       map.on("mouseenter", "substations-circle", () => { map.getCanvas().style.cursor = "pointer"; });
       map.on("mouseleave", "substations-circle", () => { map.getCanvas().style.cursor = ""; });
     }
+
+    // Zoomed out: a heat map of mapped data center footprint, on top so the concentration reads at a
+    // glance (it's translucent, so lines and substations show through). It fades out as the building
+    // outlines fade in at DATA_CENTER_ZOOM.
+    if (dcs.status === "built") {
+      addLayer({
+        id: "data-centers-heat",
+        type: "heatmap",
+        source: "data-centers-points",
+        maxzoom: DATA_CENTER_ZOOM + 1,
+        paint: {
+          // Bigger footprints count more, capped so one campus-sized outline can't swamp the map.
+          "heatmap-weight": ["interpolate", ["linear"], ["get", "footprint_m2"], 0, 0.25, 12000, 0.6, 50000, 1],
+          "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 7, 0.8, 12, 2],
+          "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 7, 14, 10, 24, 12, 34],
+          "heatmap-color": HEAT_COLORS,
+          "heatmap-opacity": ["interpolate", ["linear"], ["zoom"], DATA_CENTER_ZOOM - 0.5, 0.75, DATA_CENTER_ZOOM + 1, 0],
+        },
+      });
+    }
+
 
     // Built last, once every map layer exists for the checkboxes to control.
     renderLayers(region, map);

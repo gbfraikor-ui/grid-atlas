@@ -70,6 +70,9 @@ def build(region_id: str) -> None:
     boundary = gpd.read_file(ROOT / "data" / "processed" / region_id / "counties.geojson").to_crs(features.crs)
     inside = features.geometry.representative_point().within(boundary.union_all())
     out = features[inside][["osm_type", "osm_id", "name", "operator", "geometry"]].sort_values(["osm_type", "osm_id"])
+    # Footprint area of each outline, in square meters (0 for the few mapped as single points).
+    # It weights the zoomed-out heat map; it is ground area, not floor area or power use.
+    out["footprint_m2"] = out.geometry.to_crs(out.estimate_utm_crs()).area.round()
 
     out_dir = ROOT / "data" / "processed" / region_id
     out.to_file(out_dir / "data_centers.geojson", driver="GeoJSON")
@@ -80,6 +83,7 @@ def build(region_id: str) -> None:
     by_county = gpd.sjoin(points, boundary[["name", "geometry"]], predicate="within")["name_right"].value_counts()
     print(f"Kept {len(out)} in {region['name']}: {out.geometry.geom_type.value_counts().to_dict()}")
     print(f"With a name: {out['name'].notna().sum()}, with an operator: {out['operator'].notna().sum()}")
+    print(f"Total mapped footprint: {out['footprint_m2'].sum() * 10.7639 / 1e6:.1f} million sq ft")
     print("By jurisdiction (features, not facilities):")
     print(by_county.to_string())
     print(f"Saved {(out_dir / 'data_centers.geojson').relative_to(ROOT)} and data_centers_points.geojson")
