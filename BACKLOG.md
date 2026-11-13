@@ -48,6 +48,15 @@ data centers, minimal map. Anything here needs a named data source before it mov
 - `vote` column for board decisions (e.g. 6–3).
 - Non-geographic bodies (SCC, PJM): decisions that don't map to one county.
 
+## v3: how cities change and grow with energy infrastructure
+Everything in v1 and v2 is a snapshot; showing change needs data over time. Candidates to evaluate
+(source, license, and coverage still to check):
+- National Land Cover Database: land cover change since 2001 (e.g. farmland to industrial), public domain.
+- Census population change by decade, by block group or tract.
+- County permit records or parcel year-built fields: most precise, but different in every county.
+Questions it should answer: did data centers and substations come before or after nearby growth, and
+where did new transmission follow development versus lead it.
+
 ## Map and analysis ideas (not v1)
 v1 adds layer toggles, the "rules in force" view, and data center locations. These come later:
 - Circles sized by data center capacity (MW or GW). Needs a sourced capacity per facility; announced
